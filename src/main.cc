@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
   }
   std::cout << filename << "\n";
 
-  nlohmann::json j = {{"pi", 3.141},
+  nlohmann::json j {{"pi", 3.141},
                       {"happy", true},
                       {"name", "Niels"},
                       {"nothing", nullptr},
@@ -26,5 +26,10 @@ int main(int argc, char *argv[]) {
                       {"object", {{"currency", "USD"}, {"value", 42.99}}}};
   std::ofstream o("pretty.json");
   o << std::setw(4) << j << std::endl;
-  std::cout << "Hello World\n";
+
+  initscr();
+  printw("Hello World !");
+  refresh();
+  getch();
+  endwin();
 }
