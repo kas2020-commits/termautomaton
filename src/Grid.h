@@ -2,7 +2,6 @@
 
 #include <array>
 #include <cstddef>
-#include <vector>
 
 using stateView = std::array<bool, 9>;
 using updateFunction = bool (*)(stateView);
