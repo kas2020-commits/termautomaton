@@ -1,9 +1,22 @@
+#include <CLI/CLI.hpp>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <curses.h>
 
-int main() {
+int main(int argc, char *argv[]) {
+
+  CLI::App app{"App description"};
+  std::string filename{"default"};
+  app.add_option("-f, --file", filename, "A help string");
+  try {
+    app.parse(argc, argv);
+  } catch (const CLI::ParseError &e) {
+    return app.exit(e);
+  }
+  std::cout << filename << "\n";
+
   nlohmann::json j = {{"pi", 3.141},
                       {"happy", true},
                       {"name", "Niels"},
