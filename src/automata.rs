@@ -24,7 +24,7 @@ where
 
         // prevent too much going on at the start
         if self.t > 1 {
-            for (x, y, window) in self.grid.iter() {
+            for (x, y, window) in self.grid.iter(Grid::window_moore_wrap) {
                 self.scratch[self.grid.idx(x, y)] = ruleset(&window);
             }
             mem::swap(&mut self.scratch, &mut self.grid.data);

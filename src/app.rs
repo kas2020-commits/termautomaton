@@ -79,8 +79,7 @@ impl Widget for &App {
         for x in 0..area.width {
             for y in 0..area.height {
                 let idx = ((y * area.width) + x) as usize;
-                let b = self.ca.grid.at(x as i16, y as i16);
-                match *b {
+                match self.ca.grid.data[self.ca.grid.idx(x as usize, y as usize)] {
                     State::Alive => {
                         buf.content[idx].set_bg(Color::White);
                     }
