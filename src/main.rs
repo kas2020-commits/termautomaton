@@ -1,24 +1,47 @@
-use color_eyre::Result;
-use crossterm::event::{self, Event};
-use ratatui::{DefaultTerminal, Frame};
+mod app;
+mod grid;
+mod state;
+mod window;
 
-fn main() -> Result<()> {
-    color_eyre::install()?;
-    let terminal = ratatui::init();
-    let result = run(terminal);
-    ratatui::restore();
-    result
-}
+use grid::Grid;
+use rand::{distr::Uniform, prelude::*};
+use state::State;
+use std::io;
 
-fn run(mut terminal: DefaultTerminal) -> Result<()> {
-    loop {
-        terminal.draw(render)?;
-        if matches!(event::read()?, Event::Key(_)) {
-            break Ok(());
-        }
+unsafe fn gen_rand_vec(len: usize) -> Vec<State> {
+    let mut rng = rand::rng();
+
+    let mut data = Vec::with_capacity(len);
+
+    let range = Uniform::new(0 as f64, 1 as f64).unwrap();
+
+    for _ in 0..len {
+        let val = if range.sample(&mut rng) > 0.5 {
+            State::Alive
+        } else {
+            State::Dead
+        };
+        data.push(val);
     }
+
+    data
 }
 
-fn render(frame: &mut Frame) {
-    frame.render_widget("hello world", frame.area());
+fn main() -> io::Result<()> {
+    let terminal = ratatui::init();
+
+    let true_size = terminal.size()?;
+
+    let data = unsafe { gen_rand_vec((true_size.width * true_size.height) as usize) };
+
+    let grid = Grid::new(
+        data,
+        true_size.width as usize,
+        true_size.height as usize,
+        State::Dead,
+    );
+
+    let app_result = app::App::new(grid).run(terminal);
+    ratatui::restore();
+    app_result
 }
