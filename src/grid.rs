@@ -1,16 +1,16 @@
-use crate::window::Window;
+use crate::window::MooreNeighborhood;
 
 #[derive(Debug)]
 pub struct Grid<T> {
-    data: Vec<T>,
-    width: usize,
-    height: usize,
-    default: T,
+    pub data: Vec<T>,
+    pub default: T,
+    pub width: usize,
+    pub height: usize,
 }
 
 impl<T> Grid<T>
 where
-    T: PartialEq,
+    T: PartialEq + Copy,
 {
     pub fn new(data: Vec<T>, width: usize, height: usize, default: T) -> Self {
         assert_eq!(data.len(), width * height, "Invalid grid dimensions");
@@ -38,8 +38,8 @@ where
         }
     }
 
-    pub fn make_window(&self, x: usize, y: usize) -> Window<T> {
-        Window {
+    pub fn make_window(&self, x: usize, y: usize) -> MooreNeighborhood<T> {
+        MooreNeighborhood {
             top_left: self.at(x as i16 - 1, y as i16 - 1),
             top: self.at(x as i16, y as i16 - 1),
             top_right: self.at(x as i16 + 1, y as i16 - 1),
@@ -52,7 +52,7 @@ where
         }
     }
 
-    pub fn iter(&self) -> impl Iterator<Item = (usize, usize, Window<T>)> {
+    pub fn iter(&self) -> impl Iterator<Item = (usize, usize, MooreNeighborhood<T>)> {
         (0..self.height)
             .flat_map(move |y| (0..self.width).map(move |x| (x, y)))
             .map(move |(x, y)| (x, y, self.make_window(x, y)))

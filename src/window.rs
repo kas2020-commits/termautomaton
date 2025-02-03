@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub struct Window<'a, T>
+pub struct MooreNeighborhood<'a, T>
 where
     T: PartialEq,
 {
@@ -23,7 +23,7 @@ fn count_<T: PartialEq>(a: &T, b: &T) -> u8 {
     }
 }
 
-impl<'a, T> Window<'a, T>
+impl<'a, T> MooreNeighborhood<'a, T>
 where
     T: PartialEq,
 {
@@ -36,5 +36,9 @@ where
             + count_(self.bot_left, val)
             + count_(self.bot, val)
             + count_(self.bot_right, val)
+    }
+
+    pub fn count_all(&self, val: &T) -> u8 {
+        self.count(val) + count_(self.center, val)
     }
 }

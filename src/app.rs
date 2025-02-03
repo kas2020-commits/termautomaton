@@ -5,31 +5,26 @@ use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::prelude::*;
 use ratatui::{buffer::Buffer, layout::Rect, widgets::Widget, DefaultTerminal, Frame};
 
-use crate::{grid::Grid, state::State};
+use crate::{automata::CA, grid::Grid, rulesets::conways_game_of_life, state::State};
 
 #[derive(Debug)]
 pub struct App {
-    tick_count: u64,
-    grid: Grid<State>,
+    ca: CA<State>,
     exit: bool,
 }
 
 impl App {
     pub fn new(grid: Grid<State>) -> Self {
-        Self {
-            tick_count: 0,
-            grid,
-            exit: false,
-        }
+        let ca = CA::new(grid);
+        Self { ca, exit: false }
     }
 
     fn on_tick(&mut self) {
-        // TODO: trigger advancing CA state here
-        self.tick_count += 1;
+        self.ca.advance(conways_game_of_life);
     }
 
     pub fn run(mut self, mut terminal: DefaultTerminal) -> io::Result<()> {
-        let tick_rate = Duration::from_millis(16);
+        let tick_rate = Duration::from_millis(50);
         let mut last_tick = Instant::now();
 
         while !self.exit {
@@ -84,7 +79,7 @@ impl Widget for &App {
         for x in 0..area.width {
             for y in 0..area.height {
                 let idx = ((y * area.width) + x) as usize;
-                let b = self.grid.at(x as i16, y as i16);
+                let b = self.ca.grid.at(x as i16, y as i16);
                 match *b {
                     State::Alive => {
                         buf.content[idx].set_bg(Color::White);

@@ -1,5 +1,7 @@
 mod app;
+mod automata;
 mod grid;
+mod rulesets;
 mod state;
 mod window;
 
@@ -16,7 +18,7 @@ unsafe fn gen_rand_vec(len: usize) -> Vec<State> {
     let range = Uniform::new(0 as f64, 1 as f64).unwrap();
 
     for _ in 0..len {
-        let val = if range.sample(&mut rng) > 0.5 {
+        let val = if range.sample(&mut rng) > 0.75 {
             State::Alive
         } else {
             State::Dead
