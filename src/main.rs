@@ -8,7 +8,7 @@ mod states;
 mod windows;
 
 use cli::Cli;
-use fs_utils::load_grid_from_file;
+use fs_utils::load_ascii_grid_from_file;
 use grid::Grid;
 use rand::{distr::Uniform, prelude::*};
 use states::BasicCellState;
@@ -40,8 +40,9 @@ fn main() -> io::Result<()> {
     let terminal = ratatui::init();
     let initial_size = terminal.size()?;
 
-    if let Some(config_path) = cli.txt_grid.as_deref() {
-        let grid = load_grid_from_file(config_path, initial_size.width, initial_size.height)?;
+    if let Some(ascii_grid_path) = cli.ascii_grid.as_deref() {
+        let grid =
+            load_ascii_grid_from_file(ascii_grid_path, initial_size.width, initial_size.height)?;
         let app_result = app::TerminalApp::new(grid, initial_size).run(terminal);
         ratatui::restore();
         app_result

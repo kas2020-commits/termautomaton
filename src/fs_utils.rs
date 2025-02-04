@@ -6,7 +6,7 @@ use std::{
 
 use crate::{grid::Grid, states::BasicCellState};
 
-pub fn load_grid_from_file(
+pub fn load_ascii_grid_from_file(
     file_path: &Path,
     min_width: u16,
     min_height: u16,
