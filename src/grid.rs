@@ -1,4 +1,4 @@
-use crate::window::MooreNeighborhood;
+use crate::windows::MooreNeighborhood;
 
 #[derive(Debug)]
 pub struct Grid<T> {
