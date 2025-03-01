@@ -35,7 +35,9 @@ excludes = [
   "*.xml",
   ".gitignore",
   "flake.lock",
-  "extras/u2f-mappings"
+  "examples/*",
+  ".envrc",
+  "Cargo.lock"
 ]
 
 # Exit with error if any changes were made during execution
@@ -73,15 +75,16 @@ excludes = [
 # walk = "filesystem"
 
 [formatter.nix]
-# Command to execute
 command = "nix"
-# Command-line arguments for the command
 options = ["fmt"]
-# Glob pattern of files to include
 includes = [ "*.nix" ]
-# Glob patterns of files to exclude
 excludes = []
-# Controls the order of application when multiple formatters match the same file
-# Lower the number, the higher the precedence
-# Default is 0
+priority = 0
+
+
+[formatter.rust]
+command = "rustfmt"
+options = [ "--config", "skip_children=true", "--edition", "2021" ]
+includes = [ "*.rs" ]
+excludes = []
 priority = 0

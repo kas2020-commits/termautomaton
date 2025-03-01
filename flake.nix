@@ -3,20 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-
+    flake-utils.url = "github:numtide/flake-utils";
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -33,17 +22,15 @@
         pkgs = import nixpkgs {
           inherit system overlays;
         };
-        # 👇 new! note that it refers to the path ./rust-toolchain.toml
         rustToolchain = pkgs.pkgsBuildHost.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
       in
       with pkgs;
       {
-        formatter = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+        formatter = nixfmt-rfc-style;
         devShells.default = mkShell {
-          # 👇 we can just use `rustToolchain` here:
           buildInputs = [ rustToolchain ];
         };
-        packages.default = pkgs.callPackage ./package.nix {};
+        packages.default = callPackage ./package.nix { };
       }
     );
 }

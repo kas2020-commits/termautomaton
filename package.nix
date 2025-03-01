@@ -1,4 +1,4 @@
-{rustPlatform, ... }:
+{ rustPlatform, ... }:
 rustPlatform.buildRustPackage {
   pname = "termataumaton";
   version = "0.1.0";
