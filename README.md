@@ -2,7 +2,7 @@
 
 `termautomaton` is a program to simulate [Cellular Automaton](https://en.wikipedia.org/wiki/Cellular_automaton) (CA) with a Terminal User Interface (TUI) in Rust.
 
-![Demo](https://github.com/user-attachments/assets/9d3dd6e6-c52f-4d4d-95bf-a7427c61146b)
+[Demo](https://github.com/user-attachments/assets/9d3dd6e6-c52f-4d4d-95bf-a7427c61146b)
 
 ## Usage
 
