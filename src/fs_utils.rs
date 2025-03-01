@@ -45,7 +45,7 @@ pub fn load_ascii_grid_from_file(
 
         for char in line.chars() {
             match char {
-                '*' | '#' | 'O' => data.push(BasicCellState::Alive),
+                '*' | '#' | 'O' | 'X' => data.push(BasicCellState::Alive),
                 _ => data.push(BasicCellState::Dead),
             }
         }
