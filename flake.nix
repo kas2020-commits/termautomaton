@@ -43,6 +43,7 @@
           # 👇 we can just use `rustToolchain` here:
           buildInputs = [ rustToolchain ];
         };
+        packages.default = pkgs.callPackage ./package.nix {};
       }
     );
 }
